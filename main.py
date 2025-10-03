@@ -26,7 +26,7 @@ def criar_tabela():
 
 
 def cadrastrar_livro(titulo, autor, ano):
-    try:
+     try:
         conexao = sqlite3.connect("Biblioteca.db")
         cursor = conexao.cursor()
 
@@ -35,13 +35,13 @@ def cadrastrar_livro(titulo, autor, ano):
         VALUES(?,?,?, ?)              
         """,
         (titulo,autor,ano, "sim")   
-        )
+         )
         conexao.commit()
-    except Exception as erro:
-        #Caso ocorra algum erro no banco
-        print(f"erro ao tenta criar a tabela {erro}")
-    finally:
-        #Sempre fechar a conexão
+     except Exception as erro:
+         #Caso ocorra algum erro no banco
+         print(f"erro ao tenta criar a tabela {erro}")#
+     finally:
+         #Sempre fechar a conexão
         if conexao:
             conexao.close()
     
@@ -50,6 +50,30 @@ titulo = input("Digite o titulo do livro:")
 autor = input("Digite o nome do autor:")
 ano = int(input("coloque o ano do livro:"))
 cadrastrar_livro(titulo, autor, ano)
+
+
+def lista_livros():
+    try:
+        conexao = sqlite3("Biblioteca.db")
+        cursor = conexao.cursor()
+
+        cursor.execute("SELECT * FROM livros")
+        for linha in cursor.fetchall():
+            print(f"ID: {linha[0]} | TITULO: {linha[1]} | AUTOR: {linha[2]} | ANO: {linha[3]}")
+    except Exception as erro:
+        #Caso ocorra algum erro no banco
+        print(f"Erro ao tenta lista livros {erro}")
+    finally:
+        #Sempre fechar a conexão
+        if conexao:
+            conexao.close()
+
+          
+
+        
+
+
+
 
 
 
