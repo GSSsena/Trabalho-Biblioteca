@@ -26,7 +26,7 @@ def criar_tabela():
 
 
 def cadrastrar_livro(titulo, autor, ano):
-     try:
+    try:
         conexao = sqlite3.connect("Biblioteca.db")
         cursor = conexao.cursor()
 
@@ -37,10 +37,10 @@ def cadrastrar_livro(titulo, autor, ano):
         (titulo,autor,ano, "sim")   
          )
         conexao.commit()
-     except Exception as erro:
+    except Exception as erro:
          #Caso ocorra algum erro no banco
          print(f"erro ao tenta criar a tabela {erro}")#
-     finally:
+    finally:
          #Sempre fechar a conexão
         if conexao:
             conexao.close()
@@ -54,19 +54,34 @@ cadrastrar_livro(titulo, autor, ano)
 
 def lista_livros():
     try:
-        conexao = sqlite3("Biblioteca.db")
+        conexao = sqlite3.connect("Biblioteca.db")
         cursor = conexao.cursor()
 
         cursor.execute("SELECT * FROM livros")
         for linha in cursor.fetchall():
             print(f"ID: {linha[0]} | TITULO: {linha[1]} | AUTOR: {linha[2]} | ANO: {linha[3]}")
+            print("-"*50)
+            lista_livros()
     except Exception as erro:
-        #Caso ocorra algum erro no banco
-        print(f"Erro ao tenta lista livros {erro}")
+         #Caso ocorra algum erro no banco
+         print(f"erro ao tenta criar a tabela {erro}")#
     finally:
-        #Sempre fechar a conexão
+         #Sempre fechar a conexão
         if conexao:
             conexao.close()
+
+def Atualização_Disponibilidade(id_livros,disponivel):
+    try:
+        conexao = sqlite3.connect("Biblioteca.db")
+        cursor = conexao.cursor()
+
+        cursor.execute("""
+        UPDATE livros
+        SET disponive = 
+        WHERE id = ?
+        """,(disponivel, id_livros)
+        )
+        conexao.commit()        
 
           
 
