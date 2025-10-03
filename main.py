@@ -15,41 +15,41 @@ def criar_tabela():
         )
         """)
 
-    except Exception as erro:
-        #Caso ocorra algum erro no banco
-        print(f"erro ao tenta criar a tabela {erro}")
-    finally:
-        #Sempre fechar a conexão
-        if conexao:
-            conexao.close()
+#     except Exception as erro:
+#         #Caso ocorra algum erro no banco
+#         print(f"erro ao tenta criar a tabela {erro}")
+#     finally:
+#         #Sempre fechar a conexão
+#         if conexao:
+#             conexao.close()
             
 
 
-def cadrastrar_livro(titulo, autor, ano):
-    try:
-        conexao = sqlite3.connect("Biblioteca.db")
-        cursor = conexao.cursor()
+# def cadrastrar_livro(titulo, autor, ano):
+#     try:
+#         conexao = sqlite3.connect("Biblioteca.db")
+#         cursor = conexao.cursor()
 
-        cursor.execute("""
-        INSERT INTO livros (titulo,autor,ano, disponivel)
-        VALUES(?,?,?, ?)              
-        """,
-        (titulo,autor,ano, "sim")   
-         )
-        conexao.commit()
-    except Exception as erro:
-         #Caso ocorra algum erro no banco
-         print(f"erro ao tenta criar a tabela {erro}")#
-    finally:
-         #Sempre fechar a conexão
-        if conexao:
-            conexao.close()
+#         cursor.execute("""
+#         INSERT INTO livros (titulo,autor,ano, disponivel)
+#         VALUES(?,?,?, ?)              
+#         """,
+#         (titulo,autor,ano, "sim")   
+#          )
+#         conexao.commit()
+#     except Exception as erro:
+#          #Caso ocorra algum erro no banco
+#          print(f"erro ao tenta criar a tabela {erro}")#
+#     finally:
+#          #Sempre fechar a conexão
+#         if conexao:
+#             conexao.close()
     
 
-titulo = input("Digite o titulo do livro:")
-autor = input("Digite o nome do autor:")
-ano = int(input("coloque o ano do livro:"))
-cadrastrar_livro(titulo, autor, ano)
+# titulo = input("Digite o titulo do livro:")
+# autor = input("Digite o nome do autor:")
+# ano = int(input("coloque o ano do livro:"))
+# cadrastrar_livro(titulo, autor, ano)
 
 
 def lista_livros():
@@ -70,18 +70,28 @@ def lista_livros():
         if conexao:
             conexao.close()
 
-def Atualização_Disponibilidade(id_livros,disponivel):
+def Atualização_Disponibilidade(id_livros):
     try:
         conexao = sqlite3.connect("Biblioteca.db")
         cursor = conexao.cursor()
 
-        cursor.execute("""
-        UPDATE livros
-        SET disponive = 
-        WHERE id = ?
-        """,(disponivel, id_livros)
-        )
-        conexao.commit()        
+        cursor.execute("SELECT disponivel FROM livros WHERE id = "(id_livros))
+        resultado = cursor.fetchall()
+        if resultado[0] == "sim":
+            novo_status = "nao"
+        else:
+            novo_status = "sim"
+        cursor.execute("UPDATE livros SET disponivel = ? WHERE id ?" , (novo_status,id_livros))
+        conexao.commit()
+    except Exception as erro:
+         #Caso ocorra algum erro no banco
+         print(f"ocoreu um erro {erro}")#
+    finally:
+         #Sempre fechar a conexão
+        if conexao:
+            conexao.close()
+       
+
 
           
 
